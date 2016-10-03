@@ -183,6 +183,52 @@ std::string VRInterface::GetTrackedDeviceString( vr::IVRSystem *pHmd, vr::Tracke
   return sResult;
 }
 
+bool VRInterface::HandleInput()
+{
+  SDL_Event sdlEvent;
+  bool bRet = false;
+  while ( SDL_PollEvent( &sdlEvent ) != 0 )
+    {
+      if ( sdlEvent.type == SDL_QUIT )
+        {
+          bRet = true;
+        }
+      else if ( sdlEvent.type == SDL_KEYDOWN )
+        {
+          if ( sdlEvent.key.keysym.sym == SDLK_ESCAPE
+               || sdlEvent.key.keysym.sym == SDLK_q )
+            {
+              bRet = true;
+            }
+          if( sdlEvent.key.keysym.sym == SDLK_c )
+            {
+              // m_bShowCubes = !m_bShowCubes;
+            }
+        }
+    }
+
+  // Process SteamVR events
+  vr::VREvent_t event;
+  while( pHMD_->PollNextEvent( &event, sizeof( event ) ) )
+    {
+      // ProcessVREvent( event );
+    }
+
+  // Process SteamVR controller state
+  for( vr::TrackedDeviceIndex_t unDevice = 0; unDevice < vr::k_unMaxTrackedDeviceCount; unDevice++ )
+    {
+      vr::VRControllerState_t state;
+      if( pHMD_->GetControllerState( unDevice, &state ) )
+        {
+          std::cout << state.ulButtonPressed << std::endl;
+          // m_rbShowTrackedDevice[ unDevice ] = state.ulButtonPressed == 0;
+        }
+    }
+
+  return bRet;
+}
+
+
 void VRInterface::setErrorMsgCallback(ErrorMsgCallback fn) { error_ = fn; }
 void VRInterface::setInfoMsgCallback(InfoMsgCallback fn) { info_ = fn; }
 void VRInterface::setDebugMsgCallback(DebugMsgCallback fn) { debug_ = fn; }

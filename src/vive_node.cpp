@@ -182,6 +182,8 @@ void VIVEnode::Run()
 
     tf_broadcaster_.sendTransform(tf::StampedTransform(tf_world, ros::Time::now(), "world", "world_vive"));
 
+    vr_.HandleInput();
+
     // Publish twist messages for controller1 and controller2
     //~ double lin_vel[3], ang_vel[3];
     //~ if (vr_.GetDeviceVel(1, lin_vel, ang_vel))

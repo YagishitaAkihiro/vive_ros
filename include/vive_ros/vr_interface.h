@@ -3,6 +3,7 @@
 
 #include <openvr.h>
 #include <boost/function.hpp>
+#include <SDL.h>
 
 typedef boost::function<void(const std::string&)> DebugMsgCallback;
 typedef boost::function<void(const std::string&)> InfoMsgCallback;
@@ -24,8 +25,7 @@ class VRInterface
     int GetDeviceMatrix(int index, double pMatrix[3][4]);
     int GetDeviceVel(int index, double lin_vel[3], double ang_vel[3]);
     bool IsDeviceConnected(int index);
-    
-    
+    bool HandleInput();
     void setErrorMsgCallback(ErrorMsgCallback fn);
     void setInfoMsgCallback(InfoMsgCallback fn);
     void setDebugMsgCallback(DebugMsgCallback fn);
